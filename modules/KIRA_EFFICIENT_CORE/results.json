@@ -1,0 +1,130 @@
+{
+  "specialized": [
+    {
+      "train_ms": 2.299,
+      "predict_ms": 0.022,
+      "db_bytes": 20480,
+      "correct": true
+    },
+    {
+      "train_ms": 1.738,
+      "predict_ms": 0.022,
+      "db_bytes": 20480,
+      "correct": true
+    },
+    {
+      "train_ms": 2.013,
+      "predict_ms": 0.019,
+      "db_bytes": 20480,
+      "correct": true
+    },
+    {
+      "train_ms": 2.373,
+      "predict_ms": 0.02,
+      "db_bytes": 20480,
+      "correct": true
+    },
+    {
+      "train_ms": 2.87,
+      "predict_ms": 0.019,
+      "db_bytes": 20480,
+      "correct": true
+    }
+  ],
+  "routed_token": [
+    {
+      "train_ms": 8.132,
+      "predict_ms": 0.018,
+      "db_bytes": 53248,
+      "correct": true
+    },
+    {
+      "train_ms": 9.081,
+      "predict_ms": 0.018,
+      "db_bytes": 53248,
+      "correct": true
+    },
+    {
+      "train_ms": 14.068,
+      "predict_ms": 0.018,
+      "db_bytes": 53248,
+      "correct": true
+    },
+    {
+      "train_ms": 7.288,
+      "predict_ms": 0.025,
+      "db_bytes": 53248,
+      "correct": true
+    },
+    {
+      "train_ms": 7.411,
+      "predict_ms": 0.016,
+      "db_bytes": 53248,
+      "correct": true
+    }
+  ],
+  "rrm": [
+    {
+      "train_ms": 18.239,
+      "predict_ms": 0.267,
+      "db_bytes": 36864,
+      "correct": true
+    },
+    {
+      "train_ms": 17.24,
+      "predict_ms": 0.404,
+      "db_bytes": 36864,
+      "correct": true
+    },
+    {
+      "train_ms": 17.712,
+      "predict_ms": 0.218,
+      "db_bytes": 36864,
+      "correct": true
+    },
+    {
+      "train_ms": 17.151,
+      "predict_ms": 0.291,
+      "db_bytes": 36864,
+      "correct": true
+    },
+    {
+      "train_ms": 18.495,
+      "predict_ms": 0.253,
+      "db_bytes": 36864,
+      "correct": true
+    }
+  ],
+  "routed_graph": [
+    {
+      "train_ms": 18.741,
+      "predict_ms": 0.259,
+      "db_bytes": 36864,
+      "correct": true
+    },
+    {
+      "train_ms": 17.968,
+      "predict_ms": 0.241,
+      "db_bytes": 36864,
+      "correct": true
+    },
+    {
+      "train_ms": 23.08,
+      "predict_ms": 0.306,
+      "db_bytes": 36864,
+      "correct": true
+    },
+    {
+      "train_ms": 19.604,
+      "predict_ms": 0.255,
+      "db_bytes": 36864,
+      "correct": true
+    },
+    {
+      "train_ms": 20.012,
+      "predict_ms": 0.228,
+      "db_bytes": 36864,
+      "correct": true
+    }
+  ]
+}
