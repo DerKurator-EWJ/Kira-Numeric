@@ -17,3 +17,4 @@ Lauffaehigkeit und Integration der Module sind nicht allein durch den Import bel
 | `numeric-core-v0.4` | `KIRA_NUMERIC_CORE_0_4.zip` | `modules/KIRA_NUMERIC_CORE/` |
 | `numeric-core-v0.6` | `KIRA_NUMERIC_CORE_0_6.zip` | `modules/KIRA_NUMERIC_CORE/` |
 | `numeric-core-v0.7` | `KIRA_NUMERIC_CORE_0_7.zip` | `modules/KIRA_NUMERIC_CORE/` |
+| `numeric-core-v0.8` | `KIRA_NUMERIC_CORE_0_8.zip` | `modules/KIRA_NUMERIC_CORE/` |
