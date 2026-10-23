@@ -12,3 +12,4 @@ Lauffaehigkeit und Integration der Module sind nicht allein durch den Import bel
 |---|---|---|
 | `efficient-core-v0.1` | `KIRA_EFFICIENT_CORE_0_1.zip` | `modules/KIRA_EFFICIENT_CORE/` |
 | `numeric-core-v0.1` | `KIRA_NUMERIC_CORE_0_1.zip` | `modules/KIRA_NUMERIC_CORE/` |
+| `numeric-core-v0.2` | `KIRA_NUMERIC_CORE_0_2.zip` | `modules/KIRA_NUMERIC_CORE/` |

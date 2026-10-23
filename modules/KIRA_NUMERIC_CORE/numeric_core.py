@@ -13,6 +13,34 @@ def rational(value):
     raise TypeError('use int, Fraction or decimal/rational string; floats rejected')
 
 
+class BlockIndex:
+    """Sorted blocks: local insertion, no global list shift. Not a strict worst-case bound."""
+    def __init__(self, block_size=256):
+        self.block_size=block_size
+        self.blocks=[]
+        self.maxima=[]
+    def insert(self, item):
+        if not self.blocks:
+            self.blocks=[[item]]; self.maxima=[item]; return
+        i=bisect_left(self.maxima,item)
+        if i==len(self.blocks): i-=1
+        insort(self.blocks[i],item)
+        if len(self.blocks[i])>2*self.block_size:
+            block=self.blocks[i]
+            self.blocks[i:i+1]=[block[:self.block_size],block[self.block_size:]]
+            self.maxima[i:i+1]=[self.blocks[i][-1],self.blocks[i+1][-1]]
+        else: self.maxima[i]=self.blocks[i][-1]
+    def between(self,low,high):
+        i=bisect_left(self.maxima,low)
+        while i<len(self.blocks):
+            block=self.blocks[i]
+            left=bisect_left(block,low)
+            right=bisect_right(block,high)
+            yield from block[left:right]
+            if right<len(block): break
+            i+=1
+    def __len__(self): return sum(map(len,self.blocks))
+
 class NumericCore:
     def __init__(self, path=':memory:'):
         self.db=sqlite3.connect(path)
@@ -20,9 +48,9 @@ class NumericCore:
         self.db.execute('CREATE TABLE IF NOT EXISTS numeric_items (id INTEGER PRIMARY KEY, numerator TEXT NOT NULL, denominator TEXT NOT NULL)')
         self.db.execute('CREATE TABLE IF NOT EXISTS numeric_evidence (item_id INTEGER NOT NULL REFERENCES numeric_items(id), source TEXT NOT NULL, numerator TEXT NOT NULL, denominator TEXT NOT NULL, count INTEGER NOT NULL DEFAULT 1, PRIMARY KEY(item_id,source,numerator,denominator))')
         self.db.commit()
-        self._ordered=[]
+        self._ordered=BlockIndex()
         for identity,num,den in self.db.execute('SELECT id,numerator,denominator FROM numeric_items'):
-            insort(self._ordered,(Fraction(int(num),int(den)),identity))
+            self._ordered.insert((Fraction(int(num),int(den)),identity))
 
     def observe(self, value, identity=None, source='observed'):
         """Persist one observation. Existing identity can acquire additional evidence;
@@ -33,7 +61,7 @@ class NumericCore:
             if identity is None:
                 cur=self.db.execute('INSERT INTO numeric_items(numerator,denominator) VALUES (?,?)',(str(v.numerator),str(v.denominator)))
                 identity=cur.lastrowid
-                insort(self._ordered,(v,identity))
+                self._ordered.insert((v,identity))
             elif not self.db.execute('SELECT 1 FROM numeric_items WHERE id=?',(identity,)).fetchone():
                 raise KeyError(identity)
             self.db.execute('INSERT INTO numeric_evidence(item_id,source,numerator,denominator,count) VALUES (?,?,?,?,1) ON CONFLICT(item_id,source,numerator,denominator) DO UPDATE SET count=count+1',(identity,source,str(v.numerator),str(v.denominator)))
@@ -45,14 +73,12 @@ class NumericCore:
         return Fraction(int(row[0]),int(row[1]))
 
     def range(self, value, tolerance):
-        """Exact numerical range query O(log n + k) on the in-memory sorted index.
-        O(n) insertion due to Python list shifts; index occupies O(n) RAM.
+        """Exact numerical range query on sorted blocks, with local rather than global shifts.
+        In-memory index remains O(n) RAM; this is not an asymptotic worst-case guarantee.
         """
         x,t=rational(value),rational(tolerance)
         if t<0: raise ValueError('negative tolerance')
-        lo=bisect_left(self._ordered,(x-t,-1))
-        hi=bisect_right(self._ordered,(x+t,float('inf')))
-        return [(identity,v) for v,identity in self._ordered[lo:hi]]
+        return [(identity,v) for v,identity in self._ordered.between((x-t,-1),(x+t,float('inf')))]
 
     def evidence(self,identity):
         return [(src,Fraction(int(n),int(d)),cnt) for src,n,d,cnt in self.db.execute('SELECT source,numerator,denominator,count FROM numeric_evidence WHERE item_id=? ORDER BY source,numerator,denominator',(identity,))]
